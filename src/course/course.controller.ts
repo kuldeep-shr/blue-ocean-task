@@ -4,6 +4,7 @@ import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { ListQueryDto } from '../common/dto/list-query.dto';
+import { handleController } from '../common/utils/response.util';
 
 @Controller('course')
 export class CourseController {
@@ -11,26 +12,42 @@ export class CourseController {
 
   @Post('create')
   create(@Body() dto: CreateCourseDto) {
-    return this.courseService.create(dto);
+    return handleController(
+      () => this.courseService.create(dto),
+      'Course created successfully',
+      201,
+    );
   }
 
   @Get()
   findAll(@Query() query: ListQueryDto) {
-    return this.courseService.findAll(query);
+    return handleController(
+      () => this.courseService.findAll(query),
+      'Courses fetched successfully',
+    );
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.courseService.findOne(id);
+    return handleController(
+      () => this.courseService.findOne(id),
+      'Course fetched successfully',
+    );
   }
 
   @Post('update/:id')
   update(@Param('id') id: string, @Body() dto: UpdateCourseDto) {
-    return this.courseService.update(id, dto);
+    return handleController(
+      () => this.courseService.update(id, dto),
+      'Course updated successfully',
+    );
   }
 
   @Post('delete/:id')
   remove(@Param('id') id: string) {
-    return this.courseService.remove(id);
+    return handleController(
+      () => this.courseService.remove(id),
+      'Course deleted successfully',
+    );
   }
 }

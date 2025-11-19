@@ -1,47 +1,69 @@
-import { Controller, Post, Get, Param, Body, Query } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Param,
+  Body,
+  Query,
+  HttpStatus,
+} from '@nestjs/common';
 
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { ListQueryDto } from '../common/dto/list-query.dto';
+import { handleController } from '../common/utils/response.util';
 
 @Controller('category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
-  // CREATE
   @Post('create')
   create(@Body() dto: CreateCategoryDto) {
-    return this.categoryService.create(dto);
+    return handleController(
+      () => this.categoryService.create(dto),
+      'Category created successfully',
+      201,
+    );
   }
 
-  // LIST WITH PAGINATION, SEARCH, SORT
   @Get()
   findAll(@Query() query: ListQueryDto) {
-    return this.categoryService.findAll(query);
+    return handleController(
+      () => this.categoryService.findAll(query),
+      'Categories fetched successfully',
+    );
   }
 
-  // SINGLE
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.categoryService.findOne(id);
+    return handleController(
+      () => this.categoryService.findOne(id),
+      'Category fetched successfully',
+    );
   }
 
-  // UPDATE (POST)
   @Post('update/:id')
   update(@Param('id') id: string, @Body() dto: UpdateCategoryDto) {
-    return this.categoryService.update(id, dto);
+    return handleController(
+      () => this.categoryService.update(id, dto),
+      'Category updated successfully',
+    );
   }
 
-  // SOFT DELETE (POST)
   @Post('delete/:id')
   remove(@Param('id') id: string) {
-    return this.categoryService.remove(id);
+    return handleController(
+      () => this.categoryService.remove(id),
+      'Category deleted successfully',
+    );
   }
 
-  // CATEGORY + SUBCATEGORY COUNT AGGREGATION
   @Get('analytics/with-count')
   getCategorySubCategoryCount() {
-    return this.categoryService.getCategoryWithSubCategoryCount();
+    return handleController(
+      () => this.categoryService.getCategoryWithSubCategoryCount(),
+      'Category analytics fetched successfully',
+    );
   }
 }
