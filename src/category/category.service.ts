@@ -4,7 +4,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 import { Category, CategoryDocument } from './schemas/category.schema';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -16,6 +16,9 @@ export class CategoryService {
   constructor(
     @InjectModel(Category.name)
     private readonly categoryModel: Model<CategoryDocument>,
+
+    @InjectModel('SubCategory')
+    private readonly subCategoryModel: Model<any>,
   ) {}
 
   // CREATE -------------------------------------------------
@@ -59,7 +62,6 @@ export class CategoryService {
     return { total, page, limit, data };
   }
 
-  // FIND ONE ------------------------------------------------
   async findOne(id: string) {
     const category = await this.categoryModel.findOne({
       _id: id,
@@ -71,7 +73,6 @@ export class CategoryService {
     return category;
   }
 
-  // UPDATE
   async update(id: string, dto: UpdateCategoryDto) {
     const category = await this.categoryModel.findOneAndUpdate(
       { _id: id, isDeleted: false },
@@ -94,5 +95,33 @@ export class CategoryService {
     if (!category) throw new NotFoundException('Category not found');
 
     return { message: 'Category deleted successfully' };
+  }
+
+  async getCategoryWithSubCategoryCount() {
+    return this.categoryModel.aggregate([
+      {
+        $match: { isDeleted: false },
+      },
+      {
+        $lookup: {
+          from: 'subcategories',
+          localField: '_id',
+          foreignField: 'categoryId',
+          as: 'subcategories',
+        },
+      },
+      {
+        $addFields: {
+          subCategoryCount: { $size: '$subcategories' },
+        },
+      },
+      {
+        $project: {
+          name: 1,
+          description: 1,
+          subCategoryCount: 1,
+        },
+      },
+    ]);
   }
 }

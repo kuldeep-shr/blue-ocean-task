@@ -1,7 +1,7 @@
 {
   "name": "blue-ocean-task",
   "version": "0.0.1",
-  "description": "",
+  "description": "A modular NestJS + MongoDB backend with CRUD, pagination, relationships, and soft delete functionality for managing categories, subcategories, and courses.",
   "author": "",
   "private": true,
   "license": "UNLICENSED",

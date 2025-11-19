@@ -6,7 +6,10 @@ A backend system built using **NestJS + MongoDB (Mongoose)** to manage:
 - SubCategories
 - Courses
 
-This README covers **Module 1: Category** as required in the assignment.
+This README now covers:
+
+- **Module 1: Category**
+- **Module 2: SubCategory**
 
 ---
 
@@ -14,7 +17,15 @@ This README covers **Module 1: Category** as required in the assignment.
 
 This project implements a modular backend architecture for an e-learning platform using NestJS.
 
-Module 1 includes:
+Completed Modules:
+
+### ✅ Module 1 — Category
+
+### ✅ Module 2 — SubCategory
+
+⬜ Module 3 — Course (Coming Next)
+
+Each module follows:
 
 - Full CRUD operations
 - Pagination
@@ -22,6 +33,7 @@ Module 1 includes:
 - Sorting
 - Soft delete using `isDeleted`
 - DTO validation
+- Relationship validation
 - Clean folder structure (Controller, Service, Schema, DTO)
 
 ---
@@ -45,20 +57,20 @@ Module 1 includes:
 - Create Category
 - Get All Categories
 - Get Category by ID
-- Update Category (POST)
-- Soft Delete Category (POST)
+- Update Category (**POST**)
+- Soft Delete Category (**POST**)
 
 ### 2. Pagination, Search & Sorting
 
 Supported query parameters:
 
-| Parameter   | Description             |
-| ----------- | ----------------------- |
-| `page`      | Page number             |
-| `limit`     | Items per page          |
-| `search`    | Search by category name |
-| `sortBy`    | Sort field              |
-| `sortOrder` | asc or desc             |
+| Parameter   | Description    |
+| ----------- | -------------- |
+| `page`      | Page number    |
+| `limit`     | Items per page |
+| `search`    | Search by name |
+| `sortBy`    | Sort field     |
+| `sortOrder` | asc or desc    |
 
 ### 3. Soft Delete
 
