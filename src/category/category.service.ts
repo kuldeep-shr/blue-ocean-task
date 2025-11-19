@@ -99,22 +99,31 @@ export class CategoryService {
 
   async getCategoryWithSubCategoryCount() {
     return this.categoryModel.aggregate([
-      {
-        $match: { isDeleted: false },
-      },
+      { $match: { isDeleted: false } },
+
       {
         $lookup: {
           from: 'subcategories',
-          localField: '_id',
-          foreignField: 'categoryId',
+          let: { categoryId: '$_id' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$categoryId', { $toString: '$$categoryId' }],
+                },
+              },
+            },
+          ],
           as: 'subcategories',
         },
       },
+
       {
         $addFields: {
           subCategoryCount: { $size: '$subcategories' },
         },
       },
+
       {
         $project: {
           name: 1,
