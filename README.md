@@ -36,6 +36,7 @@ Follow the steps below to run the NestJS Course Management API locally.
 clone the repository
 cd <your project folder>
 npm install
+npm run seed (its optional, for sample data)
 create .env file (below I gave you the structure)
 npm run start:dev
 ```
